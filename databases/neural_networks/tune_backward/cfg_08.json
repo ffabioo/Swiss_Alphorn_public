@@ -1,0 +1,12 @@
+{
+  "hidden": 1024,
+  "weight_decay": 0.001,
+  "dropout": 0.0,
+  "depth": 4,
+  "lr": 0.001,
+  "k": 8,
+  "val_mse_forward_space": 0.07115307450294495,
+  "val_rmse_cycle_forward_cents": 15.106145864400046,
+  "val_rmse_cycle_rb_cents": 15.791004535590831,
+  "n_rb": 200
+}

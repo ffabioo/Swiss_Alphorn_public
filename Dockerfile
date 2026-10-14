@@ -1,0 +1,3 @@
+FROM dolfinx/lab@sha256:e3235bb2355e7974b595cdff3b8f1c91491140b12e1118c88f30f9a245eac1e0
+WORKDIR /work
+CMD ["bash"]

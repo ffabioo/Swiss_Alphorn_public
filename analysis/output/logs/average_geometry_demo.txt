@@ -1,0 +1,3 @@
+A [ 0.085  0.378  0.451 14.    47.75  49.625]  B [ 0.451  0.085  0.341 47.75  49.625 49.625]: A vs B 2.3 cents; average geometry vs their frequencies 5.9 cents RMS (max 10)
+A [ 0.085  0.378  0.268 14.    47.75  49.625]  B [ 0.451  0.195  0.085 47.75  47.75  47.75 ]: A vs B 2.0 cents; average geometry vs their frequencies 14.4 cents RMS (max 34)
+A [ 0.268  0.378  0.268 15.875 21.5   45.875]  B [ 0.195  0.341  0.122  8.375  8.375 12.125]: A vs B 3.0 cents; average geometry vs their frequencies 16.1 cents RMS (max 38)

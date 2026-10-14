@@ -1,0 +1,10 @@
+reference   : E = 19.27 cents, with the losses 19.30 cents
+forward     : E = 7.18 cents, with the losses 7.13 cents
+lookup      : E = 9.80 cents, with the losses 10.11 cents
+backward    : E = 14.26 cents, with the losses 14.28 cents
+reference   : 1D offset  +87.5, FEM offset  +86.4; losses shift the resonances by  -9.3 cents (notes -11.2 ..  -6.3; minus reference: mean +0.00, notes +0.00 .. +0.00)
+forward     : 1D offset  +87.9, FEM offset  +86.4; losses shift the resonances by  -9.9 cents (notes -14.9 ..  -6.5; minus reference: mean -0.57, notes -3.62 .. +0.71)
+lookup      : 1D offset  +87.3, FEM offset  +85.8; losses shift the resonances by -10.0 cents (notes -15.5 ..  -6.9; minus reference: mean -0.73, notes -4.25 .. +0.63)
+backward    : 1D offset  +85.3, FEM offset  +84.1; losses shift the resonances by  -9.7 cents (notes -12.0 ..  -6.7; minus reference: mean -0.37, notes -1.35 .. -0.04)
+narrow bore : 1D offset  +76.3; losses shift the resonances by -16.7 cents (notes -24.7 .. -11.6; minus reference: mean -7.42, notes -14.00 .. -2.56)
+wide bore   : 1D offset +126.5; losses shift the resonances by  -6.3 cents (notes -13.2 ..  -1.8; minus reference: mean +3.06, notes -5.19 .. +5.23)

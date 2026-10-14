@@ -1,0 +1,11 @@
+# Python environment of the ML models, the reduced-model evaluation (ml/rb_fast.py), the analyses and the figures
+# (tested with Python 3.9.13). The FEM / reduced-basis assembly steps run in the dolfinx container instead
+# (see Dockerfile and pipeline/env.sh).
+#   python3 -m venv .venv && .venv/bin/pip install -r requirements-ml.txt
+# Exact versions of all the packages: requirements-ml.lock.txt
+--extra-index-url https://download.pytorch.org/whl/cpu
+numpy==2.0.2
+scipy==1.13.1
+pandas==2.3.3
+matplotlib==3.9.4
+torch==2.8.0+cpu

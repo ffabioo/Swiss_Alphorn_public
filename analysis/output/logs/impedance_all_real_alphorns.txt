@@ -1,0 +1,127 @@
+Alphorn 1
+RMSE sim vs official: 80.00696232296552
+RMSE measured vs sim: 161.44851260489924
+RMSE measured vs official: 101.5115669882223
+% LaTeX table for Alphorn 1
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrr}
+\hline
+Note & Freq. (Hz) & Measured freq. (Hz) & Measured dev. (cents) & Simulated freq. (Hz) & Simulated dev. (cents) \\
+\hline
+Do & 185.00 & 180.00 & -47.43 & 193.85 & +80.92 \\
+Mi & 234.00 & 204.00 & -237.53 & 245.26 & +81.36 \\
+Sol & 278.00 & 278.00 & +0.00 & 295.07 & +103.14 \\
+Sib & 331.00 & 310.00 & -113.48 & 343.06 & +61.94 \\
+Do & 371.00 & 371.00 & +0.00 & 389.75 & +85.38 \\
+Ré & 417.00 & 417.00 & +0.00 & 437.86 & +84.50 \\
+Mi & 468.00 & 461.50 & -24.21 & 486.68 & +67.76 \\
+\hline
+\end{tabular}
+\caption{Measured and simulated frequencies compared to the true frequencies for First alphorn.}
+\label{tab:alphorn_1}
+\end{table}
+official: [185 234 278 331 371 417 468]
+measured: [180, 204, 278, 310, 371, 417, 461.5]
+% LaTeX table for Alphorn 1
+\begin{table}[ht]
+\centering
+\begin{tabular}{lccccccc}
+\hline
+ & Do & Mi & Sol & Sib & Do & Ré & Mi \\
+\hline
+Reference frequency $f_{\mathrm{ref}}$ (Hz) & 185.00 & 234.00 & 278.00 & 331.00 & 371.00 & 417.00 & 468.00 \\
+Measured frequency $f_{\mathrm{meas}}$ (Hz) & 180.00 & 204.00 & 278.00 & 310.00 & 371.00 & 417.00 & 461.50 \\
+Measured deviation $\Delta f_{\mathrm{meas}}$ (cents) & -47.43 & -237.53 & +0.00 & -113.48 & +0.00 & +0.00 & -24.21 \\
+Simulated frequency $f_{\mathrm{sim}}$ (Hz) & 193.85 & 245.26 & 295.07 & 343.06 & 389.75 & 437.86 & 486.68 \\
+Simulated deviation $\Delta f_{\mathrm{sim}}$ (cents) & +80.92 & +81.36 & +103.14 & +61.94 & +85.38 & +84.50 & +67.76 \\
+\hline
+\end{tabular}
+\caption{Measured and simulated frequencies compared to the true frequencies for First alphorn.}
+\label{tab:alphorn_1}
+\end{table}
+Alphorn 3
+RMSE sim vs official: 84.48414911853256
+RMSE measured vs sim: 176.6547086804063
+RMSE measured vs official: 107.11113137484787
+% LaTeX table for Alphorn 3
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrr}
+\hline
+Note & Freq. (Hz) & Measured freq. (Hz) & Measured dev. (cents) & Simulated freq. (Hz) & Simulated dev. (cents) \\
+\hline
+Do & 185.00 & 165.00 & -198.07 & 194.31 & +85.02 \\
+Mi & 234.00 & 211.00 & -179.12 & 245.60 & +83.74 \\
+Sol & 278.00 & 278.00 & +0.00 & 295.76 & +107.24 \\
+Sib & 331.00 & 311.00 & -107.90 & 343.60 & +64.69 \\
+Do & 371.00 & 366.00 & -23.49 & 390.45 & +88.44 \\
+Ré & 417.00 & 417.00 & +0.00 & 438.43 & +86.77 \\
+Mi & 468.00 & 448.00 & -75.61 & 487.36 & +70.19 \\
+Sol & 556.00 & 540.00 & -50.55 & 583.28 & +82.92 \\
+\hline
+\end{tabular}
+\caption{Measured and simulated frequencies compared to the true frequencies for Second alphorn.}
+\label{tab:alphorn_3}
+\end{table}
+official: [185 234 278 331 371 417 468]
+measured: [165, 211, 278, 311, 366, 417, 448]
+% LaTeX table for Alphorn 3
+\begin{table}[ht]
+\centering
+\begin{tabular}{lccccccc}
+\hline
+ & Do & Mi & Sol & Sib & Do & Ré & Mi \\
+\hline
+Reference frequency $f_{\mathrm{ref}}$ (Hz) & 185.00 & 234.00 & 278.00 & 331.00 & 371.00 & 417.00 & 468.00 \\
+Measured frequency $f_{\mathrm{meas}}$ (Hz) & 165.00 & 211.00 & 278.00 & 311.00 & 366.00 & 417.00 & 448.00 \\
+Measured deviation $\Delta f_{\mathrm{meas}}$ (cents) & -198.07 & -179.12 & +0.00 & -107.90 & -23.49 & +0.00 & -75.61 \\
+Simulated frequency $f_{\mathrm{sim}}$ (Hz) & 194.31 & 245.60 & 295.76 & 343.60 & 390.45 & 438.43 & 487.36 \\
+Simulated deviation $\Delta f_{\mathrm{sim}}$ (cents) & +85.02 & +83.74 & +107.24 & +64.69 & +88.44 & +86.77 & +70.19 \\
+\hline
+\end{tabular}
+\caption{Measured and simulated frequencies compared to the true frequencies for Second alphorn.}
+\label{tab:alphorn_3}
+\end{table}
+Alphorn 4
+RMSE sim vs official: 88.42076297072653
+RMSE measured vs sim: 103.23734146661273
+RMSE measured vs official: 22.24677628540494
+% LaTeX table for Alphorn 4
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrr}
+\hline
+Note & Freq. (Hz) & Measured freq. (Hz) & Measured dev. (cents) & Simulated freq. (Hz) & Simulated dev. (cents) \\
+\hline
+Do & 185.00 & 185.00 & +0.00 & 196.98 & +108.63 \\
+Mi & 234.00 & 234.00 & +0.00 & 247.54 & +97.41 \\
+Sol & 278.00 & 278.00 & +0.00 & 296.09 & +109.11 \\
+Sib & 331.00 & 326.00 & -26.35 & 344.39 & +68.66 \\
+Do & 371.00 & 370.50 & -2.33 & 391.47 & +92.99 \\
+Ré & 417.00 & 417.00 & +0.00 & 439.40 & +90.58 \\
+Mi & 468.00 & 454.00 & -52.58 & 487.39 & +70.27 \\
+\hline
+\end{tabular}
+\caption{Measured and simulated frequencies compared to the true frequencies for Third alphorn.}
+\label{tab:alphorn_4}
+\end{table}
+official: [185 234 278 331 371 417 468]
+measured: [185, 234, 278, 326, 370.5, 417, 454]
+% LaTeX table for Alphorn 4
+\begin{table}[ht]
+\centering
+\begin{tabular}{lccccccc}
+\hline
+ & Do & Mi & Sol & Sib & Do & Ré & Mi \\
+\hline
+Reference frequency $f_{\mathrm{ref}}$ (Hz) & 185.00 & 234.00 & 278.00 & 331.00 & 371.00 & 417.00 & 468.00 \\
+Measured frequency $f_{\mathrm{meas}}$ (Hz) & 185.00 & 234.00 & 278.00 & 326.00 & 370.50 & 417.00 & 454.00 \\
+Measured deviation $\Delta f_{\mathrm{meas}}$ (cents) & +0.00 & +0.00 & +0.00 & -26.35 & -2.33 & +0.00 & -52.58 \\
+Simulated frequency $f_{\mathrm{sim}}$ (Hz) & 196.98 & 247.54 & 296.09 & 344.39 & 391.47 & 439.40 & 487.39 \\
+Simulated deviation $\Delta f_{\mathrm{sim}}$ (cents) & +108.63 & +97.41 & +109.11 & +68.66 & +92.99 & +90.58 & +70.27 \\
+\hline
+\end{tabular}
+\caption{Measured and simulated frequencies compared to the true frequencies for Third alphorn.}
+\label{tab:alphorn_4}
+\end{table}

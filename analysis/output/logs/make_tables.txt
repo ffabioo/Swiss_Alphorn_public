@@ -1,0 +1,8 @@
+backward      : error (RMSE of dev - 86.37) 14.26, offset +84.13, RMSE  85.30
+forward       : error (RMSE of dev - 86.37)  7.18, offset +86.45, RMSE  86.74
+lookup        : error (RMSE of dev - 86.37)  9.80, offset +85.79, RMSE  86.35
+white_alphorn : error (RMSE of dev - 86.37) 19.27, offset +86.37, RMSE  88.50
+First alphorn: FEM offset +79.3 cents; FEM - played: [128.4 318.9 103.1 175.4  85.4  84.5  92. ] (mean 141.1)
+Second alphorn: FEM offset +83.6 cents; FEM - played: [283.1 262.9 107.2 172.6 111.9  86.8 145.8 133.5] (mean 163.0)
+Third alphorn: FEM offset +86.3 cents; FEM - played: [108.6  97.4 109.1  95.   95.3  90.6 122.9] (mean 102.7)
+written: results/tables/real_alphorns_table.tex results/tables/final_table.tex results/tables/geometry_table.tex

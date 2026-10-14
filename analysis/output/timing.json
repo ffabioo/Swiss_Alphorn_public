@@ -1,0 +1,13 @@
+{
+  "rb": {
+    "seconds_per_frequency": 4.6357919331703575e-05,
+    "seconds_per_geometry_resonances": 0.05359752383083105,
+    "method": "per frequency: best of 20 calls on the 1 Hz grid (586 frequencies, operators of one geometry); per geometry: median over 20 geometries of rb.resonances (operators, grid and refinement)",
+    "threads": "1"
+  },
+  "fem": {
+    "seconds_per_frequency": 0.2314750561490655,
+    "method": "median over 20 frequencies of FemImpedance.zabs (assembly of the system, direct solve with MUMPS, Z_in)",
+    "threads": "1"
+  }
+}

@@ -1,0 +1,57 @@
+\providecommand{\best}[1]{\textcolor[rgb]{0,0.55,0}{#1}}
+\begin{table}
+\centering
+
+\caption{Comparison of the reference alphorn geometry and the geometries obtained from the forward and backward models and the best geometry of the training data (the exhaustive search of the grid with the reduced model gives the same geometry as the forward model). For each case, the alphorn scale frequencies $f_{\mathrm{note}}$, the resonance frequencies $f_{\mathrm{FEM}}$ extracted from FEM-computed impedance spectra (resonances $n = 2,\dots,10$ and $12$, refined), and the corresponding deviations $\Delta f$, expressed in cents relative to $f_{\mathrm{note}}$, are reported, together with $\Delta f - \phi$, the deviations after subtracting the offset of the model, $\phi = 86.4$~cents (the offset of the reference alphorn, the same for all the geometries). Below each block: the offset $\overline{\Delta f}$ (mean of $\Delta f$), the root mean squared error (RMSE) of $\Delta f$, and the RMSE of $\Delta f - \phi$, used to compare the geometries. In green: for each note, the value of $\Delta f - \phi$ closest to zero, and the lowest RMSE of $\Delta f - \phi$.}
+
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccccccc}
+
+% -----------------
+
+\multicolumn{11}{c}{\textbf{Backward model}} \\
+\hline
+Notes & Do$_1$ & Sol$_1$ & Do$_2$ & Mi$_1$ & Sol$_2$ & Sib & Do$_3$ & Ré & Mi$_2$ & Sol$_3$ \\
+\hline
+$f_{\mathrm{note}}$ (Hz) & 92.00 & 139.00 & 185.00 & 234.00 & 278.00 & 331.00 & 371.00 & 417.00 & 468.00 & 556.00 \\
+$f_{\mathrm{FEM}}$ (Hz) & 97.78 & 144.06 & 194.67 & 245.51 & 295.54 & 344.10 & 390.56 & 438.48 & 487.07 & 583.80 \\
+$\Delta f$ (cents) & +105.44 & +61.93 & +88.22 & +83.12 & +105.91 & +67.17 & +88.95 & +86.97 & +69.14 & +84.47 \\
+$\Delta f - \phi$ (cents) & $+19.07$ & $-24.44$ & \best{$+1.85$} & \best{$-3.25$} & $+19.54$ & $-19.20$ & $+2.58$ & \best{$+0.60$} & $-17.23$ & $-1.90$ \\
+\multicolumn{11}{r}{\textit{Offset $\overline{\Delta f}$: +84.13 cents; RMSE of $\Delta f$: 85.30 cents; RMSE of $\Delta f - \phi$: \textbf{14.26} cents}} \\
+\hline \\
+\multicolumn{11}{c}{\textbf{Forward model}} \\
+\hline
+Notes & Do$_1$ & Sol$_1$ & Do$_2$ & Mi$_1$ & Sol$_2$ & Sib & Do$_3$ & Ré & Mi$_2$ & Sol$_3$ \\
+\hline
+$f_{\mathrm{note}}$ (Hz) & 92.00 & 139.00 & 185.00 & 234.00 & 278.00 & 331.00 & 371.00 & 417.00 & 468.00 & 556.00 \\
+$f_{\mathrm{FEM}}$ (Hz) & 96.54 & 146.31 & 196.23 & 246.57 & 292.35 & 346.24 & 389.93 & 439.10 & 488.39 & 584.09 \\
+$\Delta f$ (cents) & +83.35 & +88.71 & +102.00 & +90.59 & +87.14 & +77.94 & +86.14 & +89.41 & +73.84 & +85.33 \\
+$\Delta f - \phi$ (cents) & \best{$-3.02$} & \best{$+2.34$} & $+15.63$ & $+4.22$ & \best{$+0.77$} & \best{$-8.43$} & \best{$-0.23$} & $+3.04$ & $-12.53$ & \best{$-1.04$} \\
+\multicolumn{11}{r}{\textit{Offset $\overline{\Delta f}$: +86.45 cents; RMSE of $\Delta f$: 86.74 cents; RMSE of $\Delta f - \phi$: \best{\textbf{7.18}} cents}} \\
+\hline \\
+\multicolumn{11}{c}{\textbf{Best geometry of the training data}} \\
+\hline
+Notes & Do$_1$ & Sol$_1$ & Do$_2$ & Mi$_1$ & Sol$_2$ & Sib & Do$_3$ & Ré & Mi$_2$ & Sol$_3$ \\
+\hline
+$f_{\mathrm{note}}$ (Hz) & 92.00 & 139.00 & 185.00 & 234.00 & 278.00 & 331.00 & 371.00 & 417.00 & 468.00 & 556.00 \\
+$f_{\mathrm{FEM}}$ (Hz) & 96.19 & 147.07 & 195.22 & 247.25 & 292.57 & 344.07 & 392.29 & 437.26 & 488.86 & 583.96 \\
+$\Delta f$ (cents) & +77.11 & +97.69 & +93.12 & +95.32 & +88.44 & +67.06 & +96.59 & +82.14 & +75.49 & +84.95 \\
+$\Delta f - \phi$ (cents) & $-9.26$ & $+11.32$ & $+6.75$ & $+8.95$ & $+2.07$ & $-19.31$ & $+10.22$ & $-4.23$ & \best{$-10.88$} & $-1.42$ \\
+\multicolumn{11}{r}{\textit{Offset $\overline{\Delta f}$: +85.79 cents; RMSE of $\Delta f$: 86.35 cents; RMSE of $\Delta f - \phi$: \textbf{9.80} cents}} \\
+\hline \\
+\multicolumn{11}{c}{\textbf{Reference alphorn}} \\
+\hline
+Notes & Do$_1$ & Sol$_1$ & Do$_2$ & Mi$_1$ & Sol$_2$ & Sib & Do$_3$ & Ré & Mi$_2$ & Sol$_3$ \\
+\hline
+$f_{\mathrm{note}}$ (Hz) & 92.00 & 139.00 & 185.00 & 234.00 & 278.00 & 331.00 & 371.00 & 417.00 & 468.00 & 556.00 \\
+$f_{\mathrm{FEM}}$ (Hz) & 94.37 & 147.14 & 196.98 & 247.55 & 296.09 & 344.40 & 391.49 & 439.43 & 487.44 & 583.27 \\
+$\Delta f$ (cents) & +44.09 & +98.50 & +108.66 & +97.48 & +109.15 & +68.72 & +93.08 & +90.72 & +70.46 & +82.88 \\
+$\Delta f - \phi$ (cents) & $-42.28$ & $+12.13$ & $+22.29$ & $+11.11$ & $+22.78$ & $-17.65$ & $+6.71$ & $+4.35$ & $-15.91$ & $-3.49$ \\
+\multicolumn{11}{r}{\textit{Offset $\overline{\Delta f}$: +86.37 cents; RMSE of $\Delta f$: 88.50 cents; RMSE of $\Delta f - \phi$: \textbf{19.27} cents}} \\
+\hline \\
+% ------------------
+\end{tabular}
+}
+\label{tab:final_comparison_models}
+\end{table}
