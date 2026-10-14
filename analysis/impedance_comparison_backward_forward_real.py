@@ -4,7 +4,9 @@ backward models, with their resonances (n = 2..10, 12) and the alphorn scale.
 By default the offset of the model, phi (ml_common.COMMON_OFFSET, the same for all the geometries), is removed: the FEM
 frequencies are multiplied by 2^(-phi/1200), so that the bars show the deviations Delta f - phi of the final table.
   python analysis/impedance_comparison_backward_forward_real.py               offset of the model removed (figure of the chapter)
+                                                                               -> results/figures/impedance_comparison_backward_forward_real.pdf
   python analysis/impedance_comparison_backward_forward_real.py --with-offset  FEM frequencies as computed
+                                                                               -> results/figures/impedance_comparison_backward_forward_real_with_offset.pdf
 """
 import sys
 from pathlib import Path
@@ -29,11 +31,10 @@ CSV_BACKWARD = str(DATA_DIR / "backward.csv")
 CSV_FORWARD = str(DATA_DIR / "forward.csv")
 CSV_REAL = str(DATA_DIR / "white_alphorn.csv")
 
-OUT_FILE = str(FIGURES_DIR / "impedance_comparison_backward_forward_real.pdf")
-
 from utils.frequencies import OFFICIAL_NOTES_FREQUENCIES, OFFICIAL_NOTES
 from ml.ml_common import COMMON_OFFSET
 WITH_OFFSET = "--with-offset" in sys.argv[1:]
+OUT_FILE = str(FIGURES_DIR / ("impedance_comparison_backward_forward_real" + ("_with_offset" if WITH_OFFSET else "") + ".pdf"))
 SHIFT = 1.0 if WITH_OFFSET else 2.0 ** (-COMMON_OFFSET / 1200.0)   # FEM frequencies x SHIFT: offset of the model removed
 TARGET_NOTE_FREQS = OFFICIAL_NOTES_FREQUENCIES
 TARGET_NOTE_NAMES = [note["name"] for note in OFFICIAL_NOTES]

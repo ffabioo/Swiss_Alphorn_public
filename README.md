@@ -1,6 +1,6 @@
 # Shape optimization of the Swiss alphorn: finite elements, reduced basis method and machine learning
 
-Code to replicate the results of chapter 6 of a my PhD thesis, and for un upcoming publication.
+Code to replicate the results of chapter 6 of my PhD thesis and of an upcoming publication.
 
 **Data.** The database of the simulations (FE snapshots, reduced bases, resonance datasets, trained networks) can be
 downloaded from Harvard Dataverse: https://doi.org/10.7910/DVN/C1FTYA (section [Data](#data)).
@@ -15,10 +15,11 @@ whose resonances are best tuned to the alphorn scale.
 from the stored results in a few minutes or from scratch on a cluster (section
 [Reproducing the results](#reproducing-the-results)).
 
-**Main result.** With 1000 evaluations of the reduced model, the forward model finds the best of the 4.3 million
-admissible geometries of a grid with 26 values per parameter. Verified with FEM, this geometry reduces the error $E$
-(root mean squared deviation of the ten notes from the alphorn scale, in cents, after subtracting the offset of the
-model, the same for all the geometries) from 19.3 cents for the reference alphorn to 7.2 cents.
+**Main result.** With 1000 evaluations of the reduced model, the forward model finds the best geometry of a grid with 26
+values per parameter (4 357 080 admissible geometries, of which 4 311 053 have the 12 resonances in the band).
+Verified with FEM, this geometry reduces the error $E$ (root mean squared deviation of the ten notes from the alphorn
+scale, in cents, after subtracting the offset of the model, the same for all the geometries) from 19.3 cents for the
+reference alphorn to 7.2 cents.
 
 ## Contents
 
@@ -36,7 +37,7 @@ model, the same for all the geometries) from 19.3 cents for the reference alphor
 ## Quick start
 
 ```bash
-git clone <URL of this repository> alphorn_rbm && cd alphorn_rbm
+git clone https://github.com/ffabioo/Swiss_Alphorn_public.git && cd Swiss_Alphorn_public
 python3.9 -m venv .venv && .venv/bin/pip install -r requirements-ml.txt
 ./reproduce.sh assets
 ```
@@ -85,7 +86,7 @@ otherwise set `PY` to the interpreter.
 |---|---|---|
 | `./reproduce.sh assets` | any computer | a few minutes |
 | `./reproduce.sh saved` | a workstation, few GB of memory | about one hour on 8 cores |
-| `./reproduce.sh all` | a cluster: nodes with up to 400 GB of memory for steps 1, 3 and 6, about 160 GB of disk | about 220 CPU hours |
+| `./reproduce.sh all` | a cluster: 72-core nodes for steps 1 and 6, 128 GB of memory for step 3, about 180 GB of disk | about 220 CPU hours |
 
 All times in this README were measured on cluster nodes with 2 × Intel Xeon Platinum 8360Y (72 cores, 512 GB per
 node).
@@ -111,14 +112,18 @@ The small inputs and results are in git:
 | `analysis/output/` | outputs of the analyses: accuracy of the reduced model, statistics, timings, benchmark, logs | 1 MB | steps 0, 4, 5, 12 |
 
 **Downloading the data.** `./reproduce.sh saved` and `retrain` need `databases/reduced_basis/` and
-`databases/resonance_datasets/` besides git. Download from the dataset either:
-- the folders `reduced_basis/` and `resonance_datasets/`, into `databases/`; or
-- the single file `data_archive/alphorn_rbm_data.tar.gz` (681 MB), which holds the same files. Its folder `datasets/` is
-  called `resonance_datasets/` here. From the repository root:
-  ```bash
-  tar -xzf alphorn_rbm_data.tar.gz -C databases
-  mv databases/datasets databases/resonance_datasets
-  ```
+`databases/resonance_datasets/` besides git. From the repository root:
+```bash
+python3 utils/download_data.py              # 14 files, 1.5 GB, into databases/; checked against the checksums of Dataverse
+```
+The script uses the public API of Dataverse (no account needed); `python3 utils/download_data.py --list` lists the
+files without downloading them. Alternatively, download from the dataset page either the folders `reduced_basis/`
+and `resonance_datasets/` into `databases/`, or the single file `data_archive/alphorn_rbm_data.tar.gz` (681 MB), which
+holds the same files (its folder `datasets/` is called `resonance_datasets/` here):
+```bash
+tar -xzf alphorn_rbm_data.tar.gz -C databases
+mv databases/datasets databases/resonance_datasets
+```
 
 Then check the files, from the repository root:
 ```bash
@@ -126,9 +131,10 @@ sha256sum -c pipeline/data_release.sha256
 ```
 
 **Snapshot database.** Needed only to rebuild the reduced bases (`./reproduce.sh all`, or steps 2-3). In the dataset,
-the 1225 databases of `snapshots/` are packed in 35 tar files. Download them into `databases/snapshots/` and unpack
-them there:
+the 1225 databases of `snapshots/` are packed in 35 tar files (83 GB). Download them into `databases/snapshots/` and
+unpack them there (the tar files can be deleted afterwards):
 ```bash
+python3 utils/download_data.py snapshots
 cd databases/snapshots && for t in snapshots_*.tar; do tar -xf "$t"; done && cd -
 ```
 Step 2 merges them into `databases/solutions.sqlite` (83 GB, not in the dataset), the only input of step 3, which
@@ -232,10 +238,10 @@ previous ones. CPU times were measured on the nodes described in [Requirements](
 | 0 | `00_benchmark.sh` | FE convergence test on a problem with analytical solution, degrees 1-3 (`analysis/benchmark_convergence.py`) | `analysis/output/benchmark/` | 1 min |
 | 1 | `01_snapshots.sh` | FE snapshots: 1225 geometries × 200 frequencies, MPI (`utils/compute_hf_solutions.py`) | `databases/snapshots/solutions_*.sqlite` (83 GB) | 72 cores × 36 min |
 | 2 | `02_merge.sh` | merge of the snapshot databases (`utils/merge_databases.py`) | `databases/solutions.sqlite` (83 GB) | 8 min |
-| 3 | `03_reduced_basis.sh [database] [output]` | reduced bases of the 11 frequency zones, ranks 50-500, randomized SVD with a fixed seed (`rbm_by_zone/db_to_rb_by_zone.py`); FE data of the numpy reduced model (`ml/export_rb_fast_data.py`). Defaults: `databases/solutions.sqlite`, `databases/reduced_basis` | `databases/reduced_basis/` | 32 cores × 25 min, 216 GB of memory |
+| 3 | `03_reduced_basis.sh [database] [output]` | reduced bases of the 11 frequency zones, ranks 50-500, randomized SVD with a fixed seed (`rbm_by_zone/db_to_rb_by_zone.py`); FE data of the numpy reduced model (`ml/export_rb_fast_data.py`). Defaults: `databases/solutions.sqlite`, `databases/reduced_basis` | `databases/reduced_basis/` | 32 cores × 25 min, 128 GB of memory (53 GB used) |
 | 4 | `04_rb_validation.sh` | reduced vs FE solution: 20 test geometries × 100 frequencies (`analysis/rb_validation.py`) | `analysis/output/rb_validation/` | 20 cores × 1 min |
 | 5 | `05_rb_vs_fem.sh` | reduced vs FEM resonances, same 20 geometries (`analysis/fem_resonances.py`, `analysis/rb_vs_fem_resonances.py`); computing times (`analysis/timing.py`) | `analysis/output/rb_vs_fem/`, `analysis/output/timing.json` | 25 cores × 5 min |
-| 6 | `06_ml_dataset.sh dataset` / `grid` | reduced-model resonances of the $10^5$ sampled geometries / of the 4.4 million grid configurations (`ml/build_ml_dataset_modes.py`) | `databases/resonance_datasets/resonances_ML_rank50.tsv` / `resonances_grid26_rank50.tsv` | 3.6 / 137 CPU h |
+| 6 | `06_ml_dataset.sh dataset` / `grid` | reduced-model resonances of the $10^5$ sampled geometries / of the 4.4 million grid configurations (`ml/build_ml_dataset_modes.py`) | `databases/resonance_datasets/resonances_ML_rank50.tsv` / `resonances_grid26_rank50.tsv` | 3.6 / 137 CPU h (72 cores × 3 min / 1 h 54 min) |
 | 7 | `07_forward.sh` | forward network: training, test error, search over the grid (1000 candidates re-ranked with the reduced model), best geometry of the training set, exhaustive search (`ml/train_forward.py`; `--search-only`: search with the saved network) | `databases/neural_networks/forward.pt`, `results/data/{ml_best_mus,forward_search_summary,forward_random_predictions}.json` | 8 cores × 14 min (`--search-only`: 4 min) |
 | 8 | `08_tune_backward.sh` | hyperparameters of the backward network, 12 configurations (`ml/tune_backward.py`) | `databases/neural_networks/tune_backward/` | 18 CPU h |
 | 9 | `09_backward.sh` | backward (tandem) network: training, test error, query with the scale transposed by 0-150 cents (`ml/train_backward.py`; `--select-only`: query with the saved network) | `databases/neural_networks/backward.pt`, `results/data/backward_summary.json` | 4 cores × 25 min (`--select-only`: 1 min) |
@@ -258,7 +264,7 @@ repository.
 |---|---|---|
 | FEM impedance of the three measured alphorns | `results/figures/impedance_all_real_alphorns.pdf` | `analysis/impedance_all_real_alphorns.py` (step 12, data of step 11) |
 | forward-model predictions vs FEM for three random geometries | `results/figures/three_random_predictions_vs_impedance.pdf` | `analysis/three_random_predictions_vs_impedance.py` (steps 7, 11, 12) |
-| reference alphorn vs forward and backward geometries | `results/figures/impedance_comparison_backward_forward_real.pdf` | `analysis/impedance_comparison_backward_forward_real.py` (steps 7, 9, 11, 12): FEM spectra with the offset of the model removed (frequencies × 2^(−φ/1200)) and, below, the deviations Δf − φ of the notes in cents; `--with-offset` gives the spectra as computed |
+| reference alphorn vs forward and backward geometries | `results/figures/impedance_comparison_backward_forward_real.pdf` | `analysis/impedance_comparison_backward_forward_real.py` (steps 7, 9, 11, 12): FEM spectra with the offset of the model removed (frequencies × 2^(−φ/1200)) and, below, the deviations Δf − φ of the notes in cents; `--with-offset` gives the spectra as computed, in `results/figures/impedance_comparison_backward_forward_real_with_offset.pdf` |
 | convergence of the FE solver on a benchmark problem (appendix) | `analysis/output/benchmark/error_H10.png`, `error_L2.png` | `analysis/benchmark_convergence.py` (step 0). The figures of the chapter were made with an earlier version of the code; this script solves the same problem and gives the same errors |
 
 The mesh of the reference alphorn is `mesh/reference_domain.msh`.
@@ -278,21 +284,23 @@ The mesh of the reference alphorn is `mesh/reference_domain.msh`.
 |---|---|---|
 | Offset between the FEM resonances and the measured notes | FEM offset +86 cents, played notes 12 cents below the scale, FEM above the played notes by 91-123 cents | `analysis/output/tables_summary.json` |
 | | 1D model vs FEM within 7 cents | `analysis/output/logs/tmm1d.txt` (`analysis/tmm1d.py`) |
-| | losses 9.3-10.0 cents, $E$ with the losses | `analysis/output/tmm_shapes.json` |
 | | offset range +27 to +146 cents | `analysis/output/offset_analysis.json` |
 | Construction of the reduced basis | zones and their overlap | `utils/frequencies.py`, `rbm_by_zone/db_to_rb_by_zone.py` |
 | | accuracy of the reduced model: median 8.4e-3, ...; resonances 0.4 / 1.1 / 6.6 cents | `analysis/output/rb_validation/summary.json`, `analysis/output/rb_vs_fem/summary.json` |
 | | computing times (footnote) | `analysis/output/timing.json` (`analysis/timing.py`, step 5) |
 | | dataset: 98 718 kept, 1 282 discarded, shape of the discarded geometries | `analysis/output/dataset_stats.json` |
 | Forward model | test error; search (first candidate, 13th-ranked optimum); best training geometry | `results/data/forward_search_summary.json` |
-| | exhaustive search (same optimum, 136 CPU hours) | `results/data/forward_search_summary.json` (`rb_grid`); CPU hours of step 6 (grid) |
-| | sensitivity of the optimum to $\phi$ | `analysis/output/offset_analysis.json` (`other_c`) |
-| Backward model | averaging argument for the tandem loss | `analysis/output/average_geometry_demo.json` |
-| | test error, δ = 85 cents, $E$ = 14.3 cents | `results/data/backward_summary.json` |
+| | exhaustive search (same optimum, 137 CPU hours) | `results/data/forward_search_summary.json` (`rb_grid`); CPU hours of step 6 (grid) |
+| Backward model | test error, δ = 85 cents, $E$ = 14.3 cents | `results/data/backward_summary.json` |
 | Discussion | errors, offsets, deviations of the notes | `analysis/output/tables_summary.json` |
 | | geometries and bore profiles | `analysis/output/geometry_comparison.json` |
 | Appendix, backward hyperparameters | errors of the 12 configurations | `databases/neural_networks/tune_backward/cfg_*.json`, `analysis/output/logs/tune_backward_summary.txt` |
 | Appendix, forward hyperparameters | | not in this repository (see [Known limitations](#known-limitations)) |
+
+Three outputs support the analysis but are not quoted in the chapter: the effect of visco-thermal losses on $E$
+(`analysis/output/tmm_shapes.json`), the sensitivity of the optimum to $\phi$ (`other_c` in
+`analysis/output/offset_analysis.json`) and the numbers of the averaging argument for the tandem loss
+(`analysis/output/average_geometry_demo.json`).
 
 ## Modelling choices and conventions
 
@@ -338,9 +346,9 @@ pipeline/          the steps 00-12 (bash scripts, also SLURM jobs), env.sh (sett
                    of the downloaded data), logs/
 core/              parametric FE solver on the reference domain (parametric_solver.py; affine decomposition of the
                    cones in cone_problem.py, all_cones_problem.py)
-utils/             data folders (paths.py), settings (mesh, FE space, boundary ids), frequencies (scale, zones),
-                   geometric parameters and grids (mus_utils.py), the real alphorns (valais.py), computation, storage
-                   and merging of the snapshots
+utils/             data folders (paths.py), download of the published data (download_data.py), settings (mesh, FE
+                   space, boundary ids), frequencies (scale, zones), geometric parameters and grids (mus_utils.py), the
+                   real alphorns (valais.py), computation, storage and merging of the snapshots
 mesh/              reference mesh; real_alphorns/: meshes and centreline/radius data of the three measured alphorns
 rbm_by_zone/       frequency-localized reduced bases: randomized SVD of the snapshots of each zone
                    (db_to_rb_by_zone.py), projection of the affine operators on the bases (rbm_offline_by_zone.py)

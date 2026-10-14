@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12
-#SBATCH --mem=80G
+#SBATCH --mem=24G
 #SBATCH --time=04:00:00
 #SBATCH --output=pipeline/logs/%x-%j.log
 

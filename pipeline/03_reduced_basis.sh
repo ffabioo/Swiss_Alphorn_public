@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=32
-#SBATCH --mem=216G
+#SBATCH --mem=128G
 #SBATCH --time=04:00:00
 #SBATCH --output=pipeline/logs/%x-%j.log
 
@@ -16,7 +16,7 @@ source "$ROOT/pipeline/env.sh"
 # by the pure-numpy reduced model ml/rb_fast.py -> databases/reduced_basis/rb_fast_data.npz
 #   pipeline/03_reduced_basis.sh [database] [output folder]   (defaults: databases/solutions.sqlite,
 #                                                             databases/reduced_basis)
-# The database is the merged one of step 2 (see README, section Data); ~80 GB are read, 216 GB of memory.
+# The database is the merged one of step 2 (see README, section Data); ~80 GB are read; 53 GB of memory used (128 GB requested).
 need_container
 DB=${1:-databases/solutions.sqlite}
 OUT=${2:-databases/reduced_basis}

@@ -86,7 +86,7 @@ GREEN_MEASURED = {"First alphorn": [4, 6, 7, 8], "Second alphorn": [4, 7], "Thir
 
 def real_table():
     L_ = [r"\begin{table}[H]", r"\renewcommand{\arraystretch}{1.3}", r"\centering",
-          r"\caption{Measured and FEM-derived resonance frequencies compared to the alphorn scale frequencies for the three alphorns. The resonance frequencies $f_{\mathrm{FEM}}$ are extracted from FEM-computed impedance spectra (resonances $n = 2,\dots,10$ and $12$, numbered from the lowest one; the first resonance, about $49$~Hz, is the pedal Do, and is not part of the scale). The deviations $\Delta f_{\mathrm{meas}}$ and $\Delta f_{\mathrm{FEM}}$ are expressed in cents relative to $f_{\mathrm{note}}$. N/A: not available (note not measured).}",
+          r"\caption{Measured and FEM-derived resonance frequencies compared to the alphorn scale frequencies for the three alphorns. The resonance frequencies $f_{\mathrm{FEM}}$ are extracted from FEM-computed impedance spectra (resonances $n = 2,\dots,10$ and $12$, numbered from the lowest one. The deviations $\Delta f_{\mathrm{meas}}$ and $\Delta f_{\mathrm{FEM}}$ are expressed in cents relative to $f_{\mathrm{note}}$. N/A: not available (note not measured). In green, the best performances relative to a specific note are highlighted.}",
           r"\resizebox{\textwidth}{!}{%", r"\begin{tabular}{lcccccccccc}", ""]
     for k, (title, (name, measured)) in enumerate(REAL.items()):
         fm, ff = on_scale(measured), fem_notes(name)
