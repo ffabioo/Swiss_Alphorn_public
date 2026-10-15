@@ -5,8 +5,9 @@
 #   ./reproduce.sh saved       searches with the saved networks, FEM verification, then assets  (~1 h, + container)
 #   ./reproduce.sh retrain     networks retrained (forward, hyperparameter study, backward), then 10-12  (~20 CPU h)
 #   ./reproduce.sh all         every step from scratch: benchmark, snapshots, reduced bases, datasets, then retrain
-#                                                                                  (~220 CPU h, ~160 GB of disk)
+#                              and p_refinement                                    (~220 CPU h, ~160 GB of disk)
 #   ./reproduce.sh benchmark   FE convergence test of the appendix (container, minutes)
+#   ./reproduce.sh p_refinement   discretization error: reference alphorn with degree-2 elements (container, ~1.5 h)
 #   ./reproduce.sh step NN [args]   one step of pipeline/ (e.g. ./reproduce.sh step 06 grid)
 #
 # Add --slurm after the target to submit the steps as SLURM jobs, each one starting when the previous one has
@@ -52,8 +53,9 @@ case $target in
     retrain)   retrain ;;
     all)       run 00_benchmark.sh; run 01_snapshots.sh; run 02_merge.sh; run 03_reduced_basis.sh
                run 04_rb_validation.sh; run 05_rb_vs_fem.sh; run 06_ml_dataset.sh dataset; run 06_ml_dataset.sh grid
-               retrain ;;
+               retrain; run 13_p_refinement.sh ;;
     benchmark) run 00_benchmark.sh ;;
+    p_refinement) run 13_p_refinement.sh ;;
     step)      [ ${#args[@]} -ge 1 ] || usage
                s=$(cd pipeline && ls "${args[0]}"_*.sh 2>/dev/null | head -1)
                [ -n "$s" ] || { echo "no step ${args[0]} in pipeline/" >&2; exit 1; }

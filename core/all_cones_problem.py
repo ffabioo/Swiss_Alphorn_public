@@ -18,7 +18,9 @@ class AllConesProblem:
         )
         
         self.cone_settings = [
-            ConeProblemSetting(muh=muh, volume_id=id)
+            ConeProblemSetting(muh=muh, volume_id=id,
+                               function_space=problem_setting.function_space,
+                               quadrature_degree=problem_setting.quadrature_degree)
             for muh, id in zip(self.local_mus, self.cone_volume_ids)
         ]
 

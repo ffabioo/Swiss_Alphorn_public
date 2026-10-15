@@ -3,6 +3,8 @@ FEM resonance frequencies of one geometry, numbered from the lowest one and refi
 
   - parametric geometry (reference mesh + affine map):  python analysis/fem_resonances.py NAME --mu l1 l2 l3 R2 R3 R4
   - own mesh (real alphorns):                           python analysis/fem_resonances.py NAME --mesh path/to/mesh.msh
+  - option --degree D: Lagrange elements of degree D (default 1, used for all the results of the chapter), with the
+    quadrature degree 4 D; used by pipeline/13_p_refinement.sh (D = 2) to check the discretization error.
 
 |Z_in| is computed on a 1 Hz grid in [30, 615] Hz (saved to results/data/NAME.csv, used for the figures); every peak
 of log|Z_in| with prominence >= 0.2 is then refined by a golden-section search between its grid neighbours
@@ -28,8 +30,8 @@ GOLDEN = (np.sqrt(5) - 1) / 2
 
 
 class FemImpedance:
-    def __init__(self, mu=None, mesh=None):
-        s = self.s = ProblemSetting()
+    def __init__(self, mu=None, mesh=None, degree=1):
+        s = self.s = ProblemSetting(function_space=("Lagrange", degree), quadrature_degree=4 * degree)
         if mu is not None:   # parametric: constant matrices + cone matrices for this mu
             from core.all_cones_problem import AllConesProblem
             from utils.read_mesh import read_mesh
@@ -87,15 +89,20 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("name"); ap.add_argument("--mu", type=float, nargs=6); ap.add_argument("--mesh")
     ap.add_argument("--out-dir", default=str(DATA))
+    ap.add_argument("--degree", type=int, default=1, help="polynomial degree of the Lagrange elements (default 1)")
     a = ap.parse_args()
     out_dir = Path(a.out_dir); out_dir.mkdir(parents=True, exist_ok=True)
-    Zf = FemImpedance(mu=a.mu, mesh=a.mesh)
+    Zf = FemImpedance(mu=a.mu, mesh=a.mesh, degree=a.degree)
+    n_dofs = Zf.K.getSize()[0]
+    print(f"{a.name}: Lagrange elements of degree {a.degree}, {n_dofs} unknowns", flush=True)
     f = np.arange(30.0, 615.0 + 0.5, 1.0)
     z = np.array([Zf.zabs(x) for x in f])
     np.savetxt(out_dir / f"{a.name}.csv", np.column_stack([f, z]), delimiter=",", header="frequency,impedance", comments="")
     idx, _ = find_peaks(np.log(z), prominence=0.2)
     res = [golden_max(Zf.zabs, f[i - 1], f[i + 1]) for i in idx]
     out = {"name": a.name, "mu": a.mu, "mesh": a.mesh, "resonances": res, "n_resonances": len(res)}
+    if a.degree != 1:   # (degree 1: the format of the results of the chapter, unchanged)
+        out.update(degree=a.degree, n_dofs=n_dofs)
     (out_dir / f"{a.name}_resonances.json").write_text(json.dumps(out, indent=2))
     print(a.name, "resonances:", np.round(res, 2).tolist(), flush=True)
 

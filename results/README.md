@@ -9,7 +9,8 @@ Written by the pipeline (see the main README); the scripts are in `analysis/` an
     - parametric geometry: `python analysis/fem_resonances.py NAME --mu l1 l2 l3 R2 R3 R4`
     - own mesh (real alphorns): `python analysis/fem_resonances.py NAME --mesh mesh/real_alphorns/mesh_mesh_data20252026.<k>.msh`
 
-    All the runs of the chapter are in `pipeline/11_fem_resonances.sh`.
+    All the runs of the chapter are in `pipeline/11_fem_resonances.sh`. `pipeline/13_p_refinement.sh` adds
+    `data/white_alphorn_Q2*` (reference alphorn with degree-2 elements, option `--degree 2`; not in git).
   - `ml_best_mus.json`, `forward_search_summary.json`, `forward_random_predictions.json`, `backward_summary.json`:
     written by `ml/train_forward.py`, `ml/train_backward.py` and `analysis/grid_baseline.py` (steps 7, 9, 10).
 - `figures/` (plain Python, run by `analysis/build_assets.sh`):

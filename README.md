@@ -157,14 +157,17 @@ script that can run on any machine or be submitted to SLURM as it is.
 | `./reproduce.sh assets` | 12 | Python; the data (section [Data](#data)) for the numbers that need the reduced bases or the resonance datasets | minutes |
 | `./reproduce.sh saved` | 7 `--search-only`, 9 `--select-only`, 10, 11, 12 | Python, data, container | about 1 hour |
 | `./reproduce.sh retrain` | 7, 8, 9, 10, 11, 12 | Python, data, container | about 20 CPU hours |
-| `./reproduce.sh all` | 0-12 | Python, container, cluster | about 220 CPU hours |
+| `./reproduce.sh all` | 0-13 | Python, container, cluster | about 220 CPU hours |
 | `./reproduce.sh benchmark` | 0 | container | minutes |
+| `./reproduce.sh p_refinement` | 13 | container, Python | about 1.5 hours |
 | `./reproduce.sh step NN [args]` | one step, e.g. `./reproduce.sh step 06 grid` | | |
 
 - **`saved`** repeats the searches with the trained networks of the chapter (`databases/neural_networks/`). It therefore
   reproduces the published numbers exactly.
 - **`retrain`** trains the networks again (see [Determinism](#determinism)).
 - **`all`** also recomputes the snapshots, the reduced bases and the resonance datasets.
+- **`p_refinement`** estimates the discretization error of the FEM resonances (step 13). Its results are not in
+  git: run it to obtain them.
 
 **SLURM.** Add `--slurm` after the target, e.g. `./reproduce.sh all --slurm`, to submit each step as a SLURM job that
 starts when the previous one has finished. Each job asks for the resources in its `#SBATCH` lines, written for nodes
@@ -230,7 +233,7 @@ The main numbers:
 
 ## Pipeline
 
-Steps 1-12 produce, in order, everything the chapter uses; step 0 is independent. Each step reads the results of the
+Steps 1-12 produce, in order, everything the chapter uses; steps 0 and 13 check the FE discretization. Each step reads the results of the
 previous ones. CPU times were measured on the nodes described in [Requirements](#requirements).
 
 | Step | Script | What it does | Output | Cost |
@@ -248,6 +251,7 @@ previous ones. CPU times were measured on the nodes described in [Requirements](
 | 10 | `10_grid_baseline.sh` | exhaustive reduced-model search of the grid (`analysis/grid_baseline.py`) | `rb_grid` in `results/data/*.json` | 1 min |
 | 11 | `11_fem_resonances.sh` | FEM impedance and refined resonances of 11 geometries: real alphorns (own meshes), reference, optimized and random geometries (`analysis/fem_resonances.py`) | `results/data/<name>.csv`, `<name>_resonances.json` | 11 × 4 min |
 | 12 | `12_assets.sh` | offset statistics (`analysis/offset_analysis.py`), then all the figures, tables and numbers (`analysis/build_assets.sh`) | `results/figures/`, `results/tables/`, `analysis/output/` | 2 min |
+| 13 | `13_p_refinement.sh` | discretization error: the reference alphorn recomputed on the same mesh with Lagrange elements of degree 2 instead of 1 (`analysis/fem_resonances.py --degree 2`), compared with the degree-1 results of step 11 (`analysis/p_refinement.py`) | `results/data/white_alphorn_Q2*`, `analysis/output/p_refinement.json` (not in git) | 2 cores × 1.5 h, 5 GB of memory |
 
 Logs of the SLURM jobs go to `pipeline/logs/`. The names of the FEM results in `results/data/` are explained in
 `results/README.md`.
@@ -289,6 +293,7 @@ The mesh of the reference alphorn is `mesh/reference_domain.msh`.
 | | accuracy of the reduced model: median 8.4e-3, ...; resonances 0.4 / 1.1 / 6.6 cents | `analysis/output/rb_validation/summary.json`, `analysis/output/rb_vs_fem/summary.json` |
 | | computing times (footnote) | `analysis/output/timing.json` (`analysis/timing.py`, step 5) |
 | | dataset: 98 718 kept, 1 282 discarded, shape of the discarded geometries | `analysis/output/dataset_stats.json` |
+| Numerical results (mesh) | $\mathbb{Q}_1$ vs $\mathbb{Q}_2$ elements: 21 093 / 159 401 unknowns, offset $\phi$ 86.4 → 83.5 cents, $E$ of the reference alphorn 19.3 → 19.4 cents | `analysis/output/p_refinement.json` (`analysis/p_refinement.py`, step 13; not in git) |
 | Forward model | test error; search (first candidate, 13th-ranked optimum); best training geometry | `results/data/forward_search_summary.json` |
 | | exhaustive search (same optimum, 137 CPU hours) | `results/data/forward_search_summary.json` (`rb_grid`); CPU hours of step 6 (grid) |
 | Backward model | test error, δ = 85 cents, $E$ = 14.3 cents | `results/data/backward_summary.json` |
@@ -318,6 +323,9 @@ Three outputs support the analysis but are not quoted in the chapter: the effect
   - Constraints: $l_i \ge l_{\min} = 220\,\mathrm{mm}/L$ for $i = 1, \dots, 4$, and $R_1 \le R_2 \le R_3 \le R_4 \le R_5$.
   - The affine map of the four cones onto the reference domain is in `core/cone_problem.py` and
     `core/all_cones_problem.py`.
+- **Discretization.** $\mathbb{Q}_1$ Lagrange finite elements (trilinear on the hexahedra of
+  `mesh/reference_domain.msh`, 21 093 unknowns), quadrature degree 4 (`utils/settings.py`). Step 13 compares the
+  resonances of the reference alphorn with $\mathbb{Q}_2$ elements on the same mesh.
 - **Reduced model.**
   - 11 frequency zones: one per note, plus one at 512 Hz.
   - Each basis (rank 50) is built from the snapshots within ±46.5 Hz of its centre.
@@ -342,7 +350,7 @@ Three outputs support the analysis but are not quoted in the chapter: the effect
 
 ```text
 reproduce.sh       entry point: runs the steps of pipeline/ (section "Reproducing the results")
-pipeline/          the steps 00-12 (bash scripts, also SLURM jobs), env.sh (settings), data_release.sha256 (checksums
+pipeline/          the steps 00-13 (bash scripts, also SLURM jobs), env.sh (settings), data_release.sha256 (checksums
                    of the downloaded data), logs/
 core/              parametric FE solver on the reference domain (parametric_solver.py; affine decomposition of the
                    cones in cone_problem.py, all_cones_problem.py)
@@ -380,7 +388,8 @@ All the scripts run from the repository root, with the repository root on `PYTHO
   on an earlier dataset) and were not selected again on the present dataset.
 - **Not repeated after the correction of the outlet condition:**
   - the comparison with a single global reduced basis (its code is not part of this repository);
-  - the mesh-convergence study;
+  - the mesh-convergence study (refinement of the mesh). The discretization error is estimated instead by
+    p-refinement of the reference alphorn (step 13).
   - the benchmark figure of the appendix. Its test problem does not involve the outlet condition, and
     `analysis/benchmark_convergence.py` gives the same errors.
 
