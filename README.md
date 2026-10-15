@@ -386,22 +386,6 @@ All the scripts run from the repository root, with the repository root on `PYTHO
     `other_c`).
 - **Forward network.** Its hyperparameters were selected in the first version of the study (4-fold cross-validation
   on an earlier dataset) and were not selected again on the present dataset.
-- **Not repeated after the correction of the outlet condition:**
-  - the comparison with a single global reduced basis (its code is not part of this repository);
-  - the mesh-convergence study (refinement of the mesh). The discretization error is estimated instead by
-    p-refinement of the reference alphorn (step 13).
-  - the benchmark figure of the appendix. Its test problem does not involve the outlet condition, and
-    `analysis/benchmark_convergence.py` gives the same errors.
-
-Changes with respect to the first version of the code:
-- **Outlet boundary condition:** the sign of the Robin coefficient now matches the time convention.
-- **Constraint** $l_4 \ge l_{\min}$: enforced everywhere.
-- **Resonances:** numbered from the lowest one, instead of the highest peak in a frequency window around each note.
-- **Forward search:** re-ranked with the reduced model.
-- **Backward network:** trained as a tandem network.
-- **Ranking:** the geometries are compared after subtracting the common offset of the model.
-
-All the snapshots, bases, resonance datasets and results were recomputed after these changes.
 
 ## Citation, license, contact
 
