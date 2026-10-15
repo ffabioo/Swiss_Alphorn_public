@@ -302,9 +302,8 @@ The mesh of the reference alphorn is `mesh/reference_domain.msh`.
 | Appendix, backward hyperparameters | errors of the 12 configurations | `databases/neural_networks/tune_backward/cfg_*.json`, `analysis/output/logs/tune_backward_summary.txt` |
 | Appendix, forward hyperparameters | | not in this repository (see [Known limitations](#known-limitations)) |
 
-Three outputs support the analysis but are not quoted in the chapter: the effect of visco-thermal losses on $E$
-(`analysis/output/tmm_shapes.json`), the sensitivity of the optimum to $\phi$ (`other_c` in
-`analysis/output/offset_analysis.json`) and the numbers of the averaging argument for the tandem loss
+Two outputs support the analysis but are not quoted in the chapter: the effect of visco-thermal losses on $E$
+(`analysis/output/tmm_shapes.json`) and the numbers of the averaging argument for the tandem loss
 (`analysis/output/average_geometry_demo.json`).
 
 ## Modelling choices and conventions
@@ -381,15 +380,10 @@ All the scripts run from the repository root, with the repository root on `PYTHO
   - The FEM offset of the reference alphorn is therefore subtracted from all the geometries. This assumes that the
     error of the model does not depend on the shape. `analysis/tmm_shapes.py` supports this for the visco-thermal
     losses; it cannot be checked for the unknown main cause.
-  - The optimum depends on the value subtracted: the forward geometry ranks 1st, 2nd and 3rd in the grid for 86.37, 90
-    and 91.37 cents, but 67th for 80 cents and 1437th for 100 cents (`analysis/output/offset_analysis.json`,
-    `other_c`).
 - **Forward network.** Its hyperparameters were selected in the first version of the study (4-fold cross-validation
   on an earlier dataset) and were not selected again on the present dataset.
 
 ## Citation, license, contact
 
 - **Citation:** if you use this code or its data, please cite the thesis and the dataset
-  (https://doi.org/10.7910/DVN/C1FTYA).
-- **License:** TODO.
-- **Contact:** TODO.
+  (https://doi.org/10.7910/DVN/C1FTYA)
